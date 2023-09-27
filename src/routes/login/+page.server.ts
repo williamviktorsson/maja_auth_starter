@@ -1,6 +1,8 @@
 import { fail, redirect } from "@sveltejs/kit";
 import { PrismaClient } from "@prisma/client";
 
+// replace list of users with a reference to prisma client
+
 const prisma = new PrismaClient();
 
 export const load = async ({ cookies }) => {
@@ -24,7 +26,7 @@ export const actions = {
 
       if (existingUser) {
         // user exists, check if passwords match
-        if (existingUser.password == password) {
+        if (existingUser.password == password) {  
           cookies.set("username", username, { secure: false });
           throw redirect(307, "/");
         } else {
@@ -51,10 +53,6 @@ export const actions = {
     if (!username) {
       return fail(400, { username: "no username detected" });
     }
-
-    await prisma.user.delete({
-      where: { name: username },
-    });
     cookies.delete("username");
   },
 };
