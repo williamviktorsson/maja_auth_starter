@@ -1,12 +1,10 @@
 <script lang="ts">
-
-  // /routes/sessions/[session]/+page.svelte
-
+  // /routes/groups/[group]/+page.svelte
 
   import { browser } from "$app/environment";
   import { enhance } from "$app/forms";
   import { invalidateAll } from "$app/navigation";
-  import { fade, fly, slide } from "svelte/transition";
+  import { fade, } from "svelte/transition";
   import type { ActionData } from "./$types.js";
 
   export let data;
@@ -17,7 +15,7 @@
   browser ? setInterval(invalidateAll, 1000) : null;
 </script>
 
-<h1>Välkommen till session: {data.session}</h1>
+<h1>Välkommen till group: {data.group}</h1>
 
 <form action="?/message" method="post" use:enhance>
   <input type="text" name="message" />
@@ -28,13 +26,24 @@
 </form>
 
 {#each messages as message}
-  <div transition:fade|local>
-    {message}
+  <div class:you={message.userId == data.you.id} transition:fade|local>
+    {message.userId == data.you.id ? "You" : message.user.name} : {message.content}
+    - {new Date(message.createdAt).toLocaleDateString("sv-SE", {
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    })}
   </div>
 {/each}
 
 <style>
   span {
     color: red;
+  }
+
+  .you {
+    text-align: right;
   }
 </style>

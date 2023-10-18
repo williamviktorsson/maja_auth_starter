@@ -1,7 +1,5 @@
 <script lang="ts">
-
-// /routes/sessions/+page.svelte
-
+  // /routes/groups/+page.svelte
 
   import { browser } from "$app/environment";
   import { enhance } from "$app/forms";
@@ -14,25 +12,27 @@
   browser ? setInterval(invalidateAll, 1000) : null;
 </script>
 
-<h1>Sessions</h1>
+<h1>groups</h1>
 
 <ul>
-  {#each data.sessions as [session, messages]}
+  {#each data.groups as group}
     <li>
-      <a href="/sessions/{session}">{session} - {messages.length} messages</a>
+      <a href="/groups/{group.id}"
+        >{group.name} - {group.messages.length} messages</a
+      >
     </li>
   {/each}
 </ul>
 
 <hr />
 
-<h1>New session</h1>
+<h1>New group</h1>
 
 <form action="?/create" method="post" use:enhance>
-  <input type="text" name="sessionName" />
+  <input type="text" name="groupName" />
   <button>Create</button>
-  {#if form?.sessionName}
-    <span>{form.sessionName}</span>
+  {#if form?.groupName}
+    <span>{form.groupName}</span>
   {/if}
 </form>
 

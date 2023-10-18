@@ -11,11 +11,24 @@
   <input type="text" name="username" />
   <label for="name">Password</label>
   <input type="text" name="password" />
-  <button>login</button>
-  {#if form?.username}
-    <span style="color: red;">{form.username}</span>
-  {/if}
-  {#if form?.password}
-    <span style="color: red;">{form.password}</span>
+  <div>
+    <button>login</button>
+    <button type="button"><a href="/register">Register</a></button>
+  </div>
+  {#if form?.error}
+    <span style="color: red;">{form.error}</span>
   {/if}
 </form>
+
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 400px;
+  }
+  input {
+    margin-bottom: 10px;
+  }
+
+</style>
