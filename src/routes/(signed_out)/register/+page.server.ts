@@ -19,7 +19,7 @@ export const actions = {
 
       if (existingUser) {
         // user exists, check if passwords match
-        return fail(400, { error: "user already exists" });
+        return fail(409, { error: "user already exists" });
       } else {
         existingUser = await prisma.user.create({
           data: {
@@ -27,10 +27,8 @@ export const actions = {
             password,
           },
         });
-        const token = await prisma.token.create({
-          data: { userId: existingUser.id },
-        });
-        cookies.set("token_id", token.id, { secure: false });
+     
+        cookies.set("user_id", existingUser.id, { secure: false , path: "/"});
         console.log(username + " logged in");
         throw redirect(307, "/");
       }

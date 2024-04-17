@@ -7,36 +7,13 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model user {
   id       String    @id @default(uuid())
   name     String    @unique
   password String
-  messages message[]
-  tokens   token[]
 }
 
-model group {
-  id       String    @id @default(uuid())
-  name     String    @unique
-  messages message[]
-}
 
-model message {
-  id        String   @id @default(uuid())
-  content   String
-  user      user     @relation(fields: [userId], references: [id])
-  userId    String
-  group     group    @relation(fields: [groupId], references: [id])
-  groupId   String
-  createdAt DateTime @default(now())
-}
-
-model token {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  user      user     @relation(fields: [userId], references: [id])
-  userId    String
-}

@@ -14,10 +14,7 @@ export const actions = {
       if (existingUser) {
         // user exists, check if passwords match
         if (existingUser.password == password) {
-          const token = await prisma.token.create({
-            data: { userId: existingUser.id },
-          });
-          cookies.set("token_id", token.id, { secure: false });
+          cookies.set("user_id", existingUser.id, { secure: false, path: "/"  });
           throw redirect(307, "/"); // login
         } else {
           return fail(400, { error: "invalid credentials" });
@@ -30,11 +27,10 @@ export const actions = {
     }
   },
   logout: async ({ request, cookies }) => {
-    let token = cookies.get("token_id");
+    let token = cookies.get("user_id");
     if (!token) {
       throw redirect(307, "/login"); // login
     }
-    cookies.delete("token_id");
-    await prisma.token.delete({ where: { id: token } });
+    cookies.delete("user_id",{path: "/"});
   },
 };
